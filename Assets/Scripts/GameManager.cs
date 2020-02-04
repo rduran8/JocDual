@@ -16,14 +16,14 @@ public class GameManager : MonoBehaviour
     private Text levelText;
     private GameObject levelImage;
     private GameObject pauseImage;
+    private GameObject settingsImage;
     private int level = 1;
     private List<Enemy> enemies;
     private bool enemiesMoving;
     private bool doingSetup = true;
-    private bool escape = false;
-
+    public bool escape = false;
+    public bool settings = false;
     private static bool inici = true;
-
     public int playerLivePoints = 100;
 
 
@@ -69,6 +69,8 @@ public class GameManager : MonoBehaviour
         levelImage.SetActive(true);
         pauseImage = GameObject.Find("PauseMenu");
         pauseImage.SetActive(false);
+        settingsImage = GameObject.Find("SettingsMenu");
+        settingsImage.SetActive(false);
         Invoke("HideLevelImage", levelStartDelay);
 
         enemies.Clear();
@@ -89,20 +91,47 @@ public class GameManager : MonoBehaviour
         enabled = false;
     }
 
+    public void escapeMenu()
+    {
+        if(escape){
+            escape = false;
+            pauseImage.SetActive(false);
+            settingsImage.SetActive(false);
+            UnBlockPlayerMove();
+        }else{
+            escape = true;
+            BlockPlayerMove();
+            pauseImage.SetActive(true);
+            settingsImage.SetActive(true);
+        }
+    }
+
+    public void settingsMenu()
+    {
+        SoundManager.instance.iniciarGame();
+        if(settings){
+            settings = false;
+            pauseImage.SetActive(true);
+        }else{
+            settings = true;
+            pauseImage.SetActive(false);
+        }
+        
+    }
+
     public void Update()
     {
         //Menu de pausa
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            if(escape){
-                escape = false;
-                pauseImage.SetActive(false);
-                UnBlockPlayerMove();
-            }else{
-                escape = true;
-                BlockPlayerMove();
-                pauseImage.SetActive(true);
+            if(settings)
+            {
+                settingsMenu();
+            }else
+            {
+                escapeMenu();
             }
+            
         }
 
         if (playersTurn || enemiesMoving || doingSetup)

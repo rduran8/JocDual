@@ -13,8 +13,8 @@ public class SoundManager : MonoBehaviour
     public float highPitchRange = 1.05f;   
     private float musicVolume = 1f;
     private float efxVolume = 1f;
-    private TextMeshProUGUI musicVolumeText;
-    private TextMeshProUGUI efxVolumeText;
+    public Text musicVolumeText;
+    public Text efxVolumeText;
     private bool musicVolumeOn = true;
     private bool efxVolumeOn = true;
 
@@ -35,8 +35,16 @@ public class SoundManager : MonoBehaviour
 
     public void iniciarGame()
     {
-        musicVolumeText = GameObject.Find("MusicVolume").GetComponent<TextMeshProUGUI>();
-        efxVolumeText = GameObject.Find("EffectsVolume").GetComponent<TextMeshProUGUI>();
+        musicVolumeText = GameObject.Find("MusicVolume").GetComponent<Text>();
+        efxVolumeText = GameObject.Find("EffectsVolume").GetComponent<Text>();
+        musicVolumeText.text = ((int)(100*musicVolume)).ToString();
+        efxVolumeText.text = ((int)(100*efxVolume)).ToString();
+        Slider sliderMusica = GameObject.Find("SliderMusic").GetComponent<Slider>();
+        Slider sliderEffects = GameObject.Find("SliderEffects").GetComponent<Slider>();
+        sliderMusica.value = musicVolume;
+        sliderEffects.value = efxVolume;
+        GameObject.Find("MussicOff").GetComponent<Toggle>().isOn = musicVolumeOn;
+        GameObject.Find("EffectsOff").GetComponent<Toggle>().isOn = efxVolumeOn;
     }
 
     public void PlaySingle(AudioClip clip)
@@ -55,8 +63,7 @@ public class SoundManager : MonoBehaviour
     }
 
     void Update () {
-
-        // Setting volume option of Audio Source to be equal to musicVolume
+        //Setting volume option of Audio Source to be equal to musicVolume
         if(musicVolumeOn){
             musicSource.volume = musicVolume;
         }else{
@@ -67,8 +74,6 @@ public class SoundManager : MonoBehaviour
         }else{
             efxSource.volume = 0;
         }
-        
-        
 	}
 
     public void SetMusicVolume(float vol)
@@ -90,6 +95,6 @@ public class SoundManager : MonoBehaviour
 
     public void SetEffectsVolumeOff(bool efxVolumeOn)
     {
-       this.efxVolumeOn =efxVolumeOn;
+       this.efxVolumeOn = efxVolumeOn;
     }
 }
