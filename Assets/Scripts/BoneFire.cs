@@ -18,9 +18,10 @@ public class BoneFire : MonoBehaviour
 
 
     //DamageWall is called when the player attacks a wall.
-    public void DamageWall(int loss)
+    public void CoockMeat(Player player)
     {
         //Call the RandomizeSfx function of SoundManager to play one of two chop sounds.
         SoundManager.instance.RandomizeSfx(eatSound1, eatSound2);
+        player.Eat();
     }
 }

@@ -11,6 +11,7 @@ public class Enemy : MovingObject
     private bool skipMove;
     public AudioClip enemyAttack1;
     public AudioClip enemyAttack2;
+    private int wallMove;
 
     protected override void Start()
     {
@@ -22,7 +23,7 @@ public class Enemy : MovingObject
 
     protected override void AttemptMove<T>(int xDir, int yDir)
     {
-        if (skipMove)
+        if(skipMove)
         {
             skipMove = false;
             return;
@@ -35,7 +36,6 @@ public class Enemy : MovingObject
     {
         int xDir = 0;
         int yDir = 0;
-
         if (Mathf.Abs(target.position.x - transform.position.x) < float.Epsilon)
 
             
@@ -43,14 +43,37 @@ public class Enemy : MovingObject
 
         else
             xDir = target.position.x > transform.position.x ? 1 : -1;
-        AttemptMove<Player>(xDir, yDir);
+        AttemptMove<Component>(xDir,yDir);
     }
 
     protected override void OnCantMove<T>(T component)
     {
-        Player hitPlayer = component as Player;
-        hitPlayer.LoseLive(playerDamage);
-        animator.SetTrigger("enemyAttack");
-        SoundManager.instance.RandomizeSfx(enemyAttack1, enemyAttack2);
+        
+        if(!skipMove){
+            if(component.tag.Equals("Player"))
+            {
+                Player hitPlayer = component as Player;
+                hitPlayer.LoseLive(playerDamage);
+                animator.SetTrigger("enemyAttack");
+                SoundManager.instance.RandomizeSfx(enemyAttack1, enemyAttack2);
+            }else if(component.tag.Equals("Wall"))
+            {
+                int xDir = 0;
+                int yDir = 0;
+                yDir = target.position.y > transform.position.y ? 1 : -1;
+                if(wallMove == 1)
+                {
+                    yDir = yDir*(-1);
+                }
+                if(wallMove == 3)
+                {
+                    wallMove = 0;
+                    return;
+                }
+                wallMove++;
+                Debug.Log(wallMove);
+                AttemptMove<Player>(xDir, yDir);
+            }
+        }
     }
 }

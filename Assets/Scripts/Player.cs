@@ -19,11 +19,11 @@ public class Player : MovingObject
     public AudioClip drinkSound2;
     public AudioClip gameOverSound;
     public Text liveText;
-
-
+    public int maxLive;
     private Animator animator;           
-    private int food;  
-    private int live; 
+    public int food;  
+    public int live; 
+    
 
 
     protected override void Start()
@@ -58,7 +58,7 @@ public class Player : MovingObject
         }
         if (horizontal != 0 || vertical != 0)
         {
-            AttemptMove<Wall>(horizontal, vertical);
+            AttemptMove<Component>(horizontal, vertical);
         }
     }
 
@@ -79,9 +79,19 @@ public class Player : MovingObject
 
     protected override void OnCantMove<T>(T component)
     {
-        Wall hitWall = component as Wall;
-        hitWall.DamageWall(wallDamage);
-        animator.SetTrigger("playerChop");
+        Debug.Log("p0");
+        if(component.tag.Equals("Wall"))
+        {
+            Wall hitWall = component as Wall;
+            hitWall.DamageWall(wallDamage);
+            animator.SetTrigger("playerChop");
+        }else if(component.tag.Equals("BoneFire"))
+        {
+            Debug.Log(component.tag);
+            BoneFire boneFire = component as BoneFire;
+            animator.SetTrigger("playerChop");
+            boneFire.CoockMeat(this);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -129,5 +139,41 @@ public class Player : MovingObject
             SoundManager.instance.musicSource.Stop();
             GameManager.instance.GameOver();
         }
+    }
+
+    public void Eat()
+    {
+        int menjar = decimal.ToInt32(decimal.Truncate((maxLive-live)/livePerFood));
+        Debug.Log(menjar);
+        if(menjar == 0 && live != maxLive && food > 0)
+        {   
+            menjar = 1;
+            food -= menjar;
+            foodText.text ="Food: " + food +  " -" + menjar;
+            int cura = (maxLive-live);
+            live = maxLive;
+            liveText.text ="Live: " + live +  " +" + cura;
+        }else
+        {
+            if(menjar <= food){
+                food -= menjar;
+                foodText.text ="Food: " + food +  " -" + menjar;
+                int cura = (menjar*livePerFood);
+                live += cura;
+                liveText.text ="Live: " + live +  " +" + cura;
+            }else
+            {
+                int cura = food*livePerFood;
+                live += cura;
+                liveText.text ="Live: " + live +  " +" + cura;
+                int tfood = food;
+                food = 0;
+                foodText.text ="Food: " + food +  " -" + tfood;
+            }
+            
+        }
+            
+        
+        
     }
 }
