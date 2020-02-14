@@ -86,11 +86,33 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        System.IO.File.WriteAllText(Application.persistentDataPath + "/jugadorGuardar.2dDUAL", string.Empty);
+        System.IO.File.WriteAllText(Application.persistentDataPath + "/jocGuardar.2dDUAL", string.Empty);
         levelText.text = "After " + level + " days, you starved.";
         levelImage.SetActive(true);
         enabled = false;
     }
+  public GameManager getGame()
+    {
+        return this;
+    }
 
+    public void SaveGame()
+    {
+        SaveSystem.SaveGame(this);
+    }
+    public void LoadGame()
+    {
+        GameData data = SaveSystem.LoadGame();
+        this.level = data.level;
+
+
+    }
+     public int getLevel()
+    {
+        return level;
+    }
+    
     public void escapeMenu()
     {
         if(escape){
@@ -139,6 +161,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         StartCoroutine(MoveEnemies());
+        SaveGame();
     }
 
     public void AddEnemyToList(Enemy script)
