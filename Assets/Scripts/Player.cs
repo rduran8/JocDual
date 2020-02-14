@@ -33,6 +33,7 @@ public class Player : MovingObject
         foodText.text = "Food: " + food;
         live = GameManager.instance.playerLivePoints;
         liveText.text = "Live: " + live;
+        SavePlayer();
         base.Start();
     }
 
@@ -42,7 +43,26 @@ public class Player : MovingObject
         GameManager.instance.playerLivePoints = live;
     }
 
+    public void SavePlayer ()
+    {
+        SaveSystem.SavePlayer(this);
+    }
+    public void LoadPlayer ()
+    {
+        PlayerData data = SaveSystem.LoadPlayer();
+        food = data.food;
+        live = data.life;
 
+    }
+    public int getFood()
+    {
+        return food;
+    }
+    public int getLife()
+    {
+        return live;
+    }
+  
     private void Update()
     {
         if (!GameManager.instance.playersTurn) return;
