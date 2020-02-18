@@ -40,6 +40,15 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         enemies = new List<Enemy>();
         boardScript = GetComponent<BoardManager>();
+        if (MainMenu.loadBoolea)
+        {
+            LoadGame();
+        }
+        else
+        {
+
+        }
+
         InitGame();
     }
 
@@ -48,6 +57,20 @@ public class GameManager : MonoBehaviour
     {
         //register the callback to be called everytime the scene is loaded
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    public GameManager getGame()
+    {
+        return this;
+    }
+
+    public void SaveGame()
+    {
+        SaveSystem.SaveGame(this);
+    }
+    public void LoadGame()
+    {
+        GameData data = SaveSystem.LoadGame();
+        this.level = data.level;
     }
     static private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
         {
@@ -58,7 +81,8 @@ public class GameManager : MonoBehaviour
                 instance.InitGame();
             }
             
-        }
+
+    }
 
     public void InitGame()
     {
@@ -75,6 +99,7 @@ public class GameManager : MonoBehaviour
 
         enemies.Clear();
         boardScript.SetupScene(level);
+        SaveGame();
     }
 
     void HideLevelImage()
@@ -83,7 +108,11 @@ public class GameManager : MonoBehaviour
         UnBlockPlayerMove();
         HidePauseMenu();
     }
-
+  
+    public int getLevel()
+    {
+        return level;
+    }
     public void GameOver()
     {
         System.IO.File.WriteAllText(Application.persistentDataPath + "/jugadorGuardar.2dDUAL", string.Empty);
@@ -91,28 +120,9 @@ public class GameManager : MonoBehaviour
         levelText.text = "After " + level + " days, you starved.";
         levelImage.SetActive(true);
         enabled = false;
-    }
-  public GameManager getGame()
-    {
-        return this;
+      
     }
 
-    public void SaveGame()
-    {
-        SaveSystem.SaveGame(this);
-    }
-    public void LoadGame()
-    {
-        GameData data = SaveSystem.LoadGame();
-        this.level = data.level;
-
-
-    }
-     public int getLevel()
-    {
-        return level;
-    }
-    
     public void escapeMenu()
     {
         if(escape){
@@ -161,7 +171,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         StartCoroutine(MoveEnemies());
-        SaveGame();
+   
     }
 
     public void AddEnemyToList(Enemy script)

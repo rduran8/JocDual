@@ -33,8 +33,22 @@ public class Player : MovingObject
         foodText.text = "Food: " + food;
         live = GameManager.instance.playerLivePoints;
         liveText.text = "Live: " + live;
+        Debug.Log(getFood());
+        
+        if (MainMenu.loadBoolea)
+        {
+            MainMenu.setBooleaFalse();
+            LoadPlayer();
+        }
+        else
+        {
+            
+        }
+        //LoadPlayer();
         SavePlayer();
+        Debug.Log(getLife());
         base.Start();
+      
     }
 
     private void OnDisable()
@@ -43,26 +57,7 @@ public class Player : MovingObject
         GameManager.instance.playerLivePoints = live;
     }
 
-    public void SavePlayer ()
-    {
-        SaveSystem.SavePlayer(this);
-    }
-    public void LoadPlayer ()
-    {
-        PlayerData data = SaveSystem.LoadPlayer();
-        food = data.food;
-        live = data.life;
 
-    }
-    public int getFood()
-    {
-        return food;
-    }
-    public int getLife()
-    {
-        return live;
-    }
-  
     private void Update()
     {
         if (!GameManager.instance.playersTurn) return;
@@ -80,6 +75,7 @@ public class Player : MovingObject
         {
             AttemptMove<Component>(horizontal, vertical);
         }
+
     }
 
     
@@ -95,6 +91,7 @@ public class Player : MovingObject
         }
         CheckIfGameOver();
         GameManager.instance.playersTurn = false;
+       
     }
 
     protected override void OnCantMove<T>(T component)
@@ -127,6 +124,8 @@ public class Player : MovingObject
             foodText.text ="Food: " + food +  " +" + pointsPerFood;
             SoundManager.instance.RandomizeSfx(eatSound1, eatSound2);
             other.gameObject.SetActive(false);
+          
+
         }
         else if (other.tag == "Soda")
         {
@@ -137,12 +136,27 @@ public class Player : MovingObject
         }
     }
 
+
     [System.Obsolete]
     private void Restart()
     {
-        Application.LoadLevel(Application.loadedLevel);
+        Application.LoadLevel(Application.loadedLevel); 
     }
 
+    public void SavePlayer ()
+    {
+        SaveSystem.SavePlayer(this);
+    }
+    public void LoadPlayer ()
+    {
+        PlayerData data = SaveSystem.LoadPlayer();
+        food = data.food;
+        live = data.life;
+
+    }
+
+  
+  
     public void LoseLive(int loss)
     {
         animator.SetTrigger("playerHit");
@@ -150,7 +164,14 @@ public class Player : MovingObject
         liveText.text ="Live: " + live +  " -" + loss;
         CheckIfGameOver();
     }
-
+    public int getFood()
+    {
+        return food;
+    }
+    public int getLife()
+    {
+        return live;
+    }
     private void CheckIfGameOver()
     {
         if (live <= 0)
@@ -158,6 +179,7 @@ public class Player : MovingObject
             SoundManager.instance.PlaySingle(gameOverSound);
             SoundManager.instance.musicSource.Stop();
             GameManager.instance.GameOver();
+
         }
     }
 

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    static public bool loadBoolea = false;
     // Start is called before the first frame update
     public void PlayButton()
     {
@@ -20,7 +21,16 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
+    public void LoadButton()
+    {
+        loadBoolea = true;
+        SceneManager.LoadScene("Main", LoadSceneMode.Single);
+    }
 
+    public static void setBooleaFalse()
+    {
+        loadBoolea = false;
+    }
     
     
 }
