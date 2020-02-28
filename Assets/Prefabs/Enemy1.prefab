@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 865600065838869168}
   - component: {fileID: 1340616460087360830}
   - component: {fileID: 2231161250064555610}
-  - component: {fileID: -270637729686604456}
+  - component: {fileID: 6862383592133516498}
   m_Layer: 8
   m_Name: Enemy1
   m_TagString: Enemy
@@ -150,7 +150,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9, y: 0.9}
   m_EdgeRadius: 0
---- !u!114 &-270637729686604456
+--- !u!114 &6862383592133516498
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,6 +166,6 @@ MonoBehaviour:
   blockingLayer:
     serializedVersion: 2
     m_Bits: 256
-  playerDamage: 10
+  playerDamage: 20
   enemyAttack1: {fileID: 8300000, guid: 0db8cac2749584a009540aa5671ee80d, type: 3}
   enemyAttack2: {fileID: 8300000, guid: 114514a3b3697484ebaa08f7fbf842d3, type: 3}

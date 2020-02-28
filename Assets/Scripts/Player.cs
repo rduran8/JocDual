@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MovingObject
 {
@@ -23,11 +24,16 @@ public class Player : MovingObject
     private Animator animator;           
     public int food;  
     public int live; 
+    public static Player instance = null;
+    private GameObject combat;
     
 
 
     protected override void Start()
     {
+        instance = this;
+        combat = GameObject.Find("Combat");
+        combat.SetActive(false);
         animator = GetComponent<Animator>();
         food = GameManager.instance.playerFoodPoints;
         foodText.text = "Food: " + food;
@@ -58,7 +64,8 @@ public class Player : MovingObject
         }
         if (horizontal != 0 || vertical != 0)
         {
-            AttemptMove<Component>(horizontal, vertical);
+            AttemptMove<Wall>(horizontal, vertical);
+            AttemptMove<BoneFire>(horizontal, vertical);
         }
     }
 
@@ -79,7 +86,6 @@ public class Player : MovingObject
 
     protected override void OnCantMove<T>(T component)
     {
-        Debug.Log("p0");
         if(component.tag.Equals("Wall"))
         {
             Wall hitWall = component as Wall;
@@ -90,7 +96,10 @@ public class Player : MovingObject
             Debug.Log(component.tag);
             BoneFire boneFire = component as BoneFire;
             animator.SetTrigger("playerChop");
-            boneFire.CoockMeat(this);
+            SoundManager.instance.RandomizeSfx(eatSound1, eatSound2);
+            Eat();
+            //SceneManager.LoadScene("Combat",LoadSceneMode.Additive);
+            //boneFire.CoockMeat(this);
         }
     }
 
@@ -175,5 +184,17 @@ public class Player : MovingObject
             
         
         
+    }
+    public void iniciarCombat(Enemy enemy)
+    {
+        GameManager.instance.BlockPlayerMove();
+        combat.SetActive(true);
+        Combat  CombatScript = combat.GetComponent<Combat>();
+        CombatScript.newCombat(this,enemy);
+    }
+
+    public void Attack()
+    {
+        animator.SetTrigger("playerChop");
     }
 }

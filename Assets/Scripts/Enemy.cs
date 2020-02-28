@@ -12,6 +12,7 @@ public class Enemy : MovingObject
     public AudioClip enemyAttack1;
     public AudioClip enemyAttack2;
     private int wallMove;
+    public int vida;
 
     protected override void Start()
     {
@@ -29,6 +30,7 @@ public class Enemy : MovingObject
             return;
         }
         base.AttemptMove<T>(xDir, yDir);
+        wallMove = 0;
         skipMove = true; 
     }
 
@@ -48,16 +50,17 @@ public class Enemy : MovingObject
 
     protected override void OnCantMove<T>(T component)
     {
-        
         if(!skipMove){
             if(component.tag.Equals("Player"))
             {
-                Player hitPlayer = component as Player;
-                hitPlayer.LoseLive(playerDamage);
+                Player hitPlayer = Player.instance;
+                hitPlayer.iniciarCombat(this);
+                //hitPlayer.LoseLive(playerDamage);
                 animator.SetTrigger("enemyAttack");
                 SoundManager.instance.RandomizeSfx(enemyAttack1, enemyAttack2);
             }else if(component.tag.Equals("Wall"))
             {
+                Debug.Log(component.tag);
                 int xDir = 0;
                 int yDir = 0;
                 yDir = target.position.y > transform.position.y ? 1 : -1;
@@ -71,9 +74,13 @@ public class Enemy : MovingObject
                     return;
                 }
                 wallMove++;
-                Debug.Log(wallMove);
-                AttemptMove<Player>(xDir, yDir);
+                AttemptMove<Component>(xDir, yDir);
             }
         }
+    }
+
+    public void Attack()
+    {
+        animator.SetTrigger("enemyAttack");
     }
 }

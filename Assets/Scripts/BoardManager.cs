@@ -28,14 +28,18 @@ public class BoardManager : MonoBehaviour
 
     public GameObject exit;
     public GameObject boneFire;
+    public GameObject playerCombat;
     public GameObject[] floorTiles;
     public GameObject[] wallTiles;
     public GameObject[] foodTiles;
     public GameObject[] enemyTiles;
     public GameObject[] outerWallTiles;
-
     private Transform boardHolder;
+    private Transform boardHolderExtra;
+    private Transform boardHolderCombat;
     private List<Vector3> gridPositions = new List<Vector3>();
+    public static BoardManager script;
+    private int seed = 0;
 
 
     void InitialiseList()
@@ -53,8 +57,10 @@ public class BoardManager : MonoBehaviour
 
     void BoardSetup()
     {
+        script = this;
         boardHolder = new GameObject("Board").transform;
-
+        boardHolderExtra = new GameObject("BoardExtra").transform;
+        boardHolderCombat = new GameObject("BoardCombat").transform;
         for (int x = -1; x < columns + 1; x++)
         {
             for (int y = -1; y < rows + 1; y++)
@@ -88,26 +94,69 @@ public class BoardManager : MonoBehaviour
         {
             Vector3 randomPosition = RandomPosition();
             GameObject tileChoice = tileArray[Random.Range(0, tileArray.Length)];
-            Instantiate(tileChoice, randomPosition, Quaternion.identity);
+            instantiateTile(tileChoice,randomPosition);
         }
+    }
+    
+    private void instantiateTile(GameObject tileChoice, Vector3 randomPosition)
+    {
+        GameObject myObject = Instantiate(tileChoice, randomPosition, Quaternion.identity);
+        myObject.transform.parent = boardHolderExtra.transform;
+    }
+
+    private void instantiateTileCombat(GameObject tileChoice, Vector3 randomPosition)
+    {
+        GameObject myObject = Instantiate(tileChoice, randomPosition, Quaternion.identity);
+        myObject.transform.parent = boardHolderCombat.transform;
     }
 
     public void SetupScene(int level)
     {
+        setSeed();
+        Debug.Log(Random.state.GetHashCode());
         BoardSetup();
         InitialiseList();
         LayoutObjectAtRandom(foodTiles, foodCount.minimum, foodCount.maximum);
         if(level%5==0 || level==1)
         {
             Vector3 pbonfire = new Vector3(columns/2, rows/2, 0f);
-            Instantiate(boneFire, pbonfire, Quaternion.identity);
+            instantiateTile(boneFire,pbonfire);
         }else{
             LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);
             int enemyCount = (int)Mathf.Log(level, 2f);
             LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);
         }
-        Instantiate(exit, new Vector3(columns - 1, rows - 1, 0f), Quaternion.identity);
-        
-        
+        instantiateTile(exit,new Vector3(columns - 1, rows - 1, 0f));
+    }
+
+    public void addPlayerOnCombat()
+    {
+        instantiateTileCombat(playerCombat,new Vector3(columns/4, (int)(rows/1.25), 0f));
+    }
+
+    public void addEnemyOnCombat()
+    {
+        instantiateTileCombat(enemyTiles[0],new Vector3((int)(columns/1.25), (int)(rows/1.25), 0f));
+    }
+
+    public void  setSeed(){
+        if(seed == 0){
+            Random.InitState(Random.Range(-1000000,1000000));
+        }else{
+            Random.InitState(seed);
+        }
+    }
+
+    public void  setSeed(int seed){
+        this.seed = seed;
+        if(seed == 0){
+            Random.InitState(Random.Range(-1000000,1000000));
+        }else{
+            Random.InitState(seed);
+        }
+    }
+
+    public void saveSeed(){
+        this.seed = Random.state.GetHashCode();
     }
 }
