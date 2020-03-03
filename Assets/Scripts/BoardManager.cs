@@ -104,10 +104,11 @@ public class BoardManager : MonoBehaviour
         myObject.transform.parent = boardHolderExtra.transform;
     }
 
-    private void instantiateTileCombat(GameObject tileChoice, Vector3 randomPosition)
+    private GameObject instantiateTileCombat(GameObject tileChoice, Vector3 randomPosition)
     {
         GameObject myObject = Instantiate(tileChoice, randomPosition, Quaternion.identity);
         myObject.transform.parent = boardHolderCombat.transform;
+        return myObject;
     }
 
     public void SetupScene(int level)
@@ -129,14 +130,16 @@ public class BoardManager : MonoBehaviour
         instantiateTile(exit,new Vector3(columns - 1, rows - 1, 0f));
     }
 
-    public void addPlayerOnCombat()
+    public PlayerCombat addPlayerOnCombat()
     {
-        instantiateTileCombat(playerCombat,new Vector3(columns/4, (int)(rows/1.25), 0f));
+        GameObject player = instantiateTileCombat(playerCombat,new Vector3(columns/4, (int)(rows/1.25), 0f));
+        return player.GetComponent<PlayerCombat>();
     }
 
-    public void addEnemyOnCombat()
+    public Enemy addEnemyOnCombat()
     {
-        instantiateTileCombat(enemyTiles[0],new Vector3((int)(columns/1.25), (int)(rows/1.25), 0f));
+        GameObject enemy = instantiateTileCombat(enemyTiles[0],new Vector3((int)(columns/1.25), (int)(rows/1.25), 0f));
+        return enemy.GetComponent<Enemy>();
     }
 
     public void  setSeed(){

@@ -6,6 +6,8 @@ public class Combat : MonoBehaviour
 {
     public static Combat instance = null;
     private Player player;
+
+    private PlayerCombat playerCombat;
     private Enemy enemy;
     private GameObject mapa;
     public Animator animator;
@@ -42,14 +44,14 @@ public class Combat : MonoBehaviour
     public void addPlayer()
     {
         //BoardManager  BoardScript = BoardManager.script;
-        BoardScript.addPlayerOnCombat();
+        playerCombat = BoardScript.addPlayerOnCombat();
         //player = GameObject.Find("BoardCombat").GetComponentInChildren<pl;
         //BoardScript.newCombat(this,enemy);
     }
 
     public void addEnemy()
     { 
-        BoardScript.addEnemyOnCombat();
+        enemy = BoardScript.addEnemyOnCombat();
     }
 
     public void FadetoCombat()
@@ -76,7 +78,7 @@ public class Combat : MonoBehaviour
 
     public void playerAttack()
     {
-        player.Attack();
+        playerCombat.Attack();
     }
     public void enemyAttack()
     {

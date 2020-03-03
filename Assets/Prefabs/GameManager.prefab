@@ -76,7 +76,7 @@ MonoBehaviour:
   exit: {fileID: 4327309848038117284, guid: bf5fd4268845e1e40bff5b8354518132, type: 3}
   boneFire: {fileID: 8665494492449191832, guid: 67af7150b011367418cf8d02645ac47b,
     type: 3}
-  playerCombat: {fileID: 7304431087903219482, guid: 0ca7d42df353f604eb055d803784ceb9,
+  playerCombat: {fileID: 8654247880566884827, guid: 7609b91830f677742a07ca6032edb08d,
     type: 3}
   floorTiles:
   - {fileID: 7849281429960615672, guid: 75c53e41696545e4baef1c83374591cc, type: 3}

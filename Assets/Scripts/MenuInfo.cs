@@ -33,13 +33,13 @@ public class MenuInfo : MonoBehaviour
             enabled = false;
             
         }
-        playerAttackBar.value += Time.deltaTime/4;
-        if(playerAttackBar.value == 1)
+        enemyAttackBar.value += Time.deltaTime / 4 - 0.00001f;
+        if (enemyAttackBar.value == 1)
         {
-            playerAttackBar.value = 0;
+            enemyAttackBar.value = 0;
             CombatScript.enemyAttack();
             enabled = false;
-            
+
         }
     }
 
