@@ -10,6 +10,7 @@ public class MenuAttack : MonoBehaviour
     private Combat CombatScript;
     private MenuInfo menuInfoScript;
     public GameObject SpecialsMenu;
+    private string buttonSelecionat;
 
 
     public Button buttonAttack;
@@ -37,13 +38,19 @@ public class MenuAttack : MonoBehaviour
         SpecialsMenu.SetActive(false);
     }
 
-
-    
     void Update()
     {
         
     }
 
+    public void afterAttack()
+    {
+        setIninteractableButtons();
+        SpecialsMenu.SetActive(false);
+        buttonSelecionat = null;
+    }
+
+    //reinicia tots els buttons principals
     private void setIninteractableButtons()
     {
         buttonAttack.interactable = true;
@@ -52,24 +59,45 @@ public class MenuAttack : MonoBehaviour
         buttonRecuperar.interactable = true;
     }
 
+    //ButtonAttack desactia el de attack al fer click i activa la resta
     public void SelectAttack()
     {
+        setIninteractableButtons();
         buttonAttack.interactable = false;
         SpecialsMenu.SetActive(false);
+        buttonSelecionat = "Attack";
     }
+
+    //ButtonDefend desactia el de defend al fer click i activa la resta
     public void SelectDefend()
     {
+        setIninteractableButtons();
         buttonDefend.interactable = false;
         SpecialsMenu.SetActive(false);
+        buttonSelecionat = "Defend";
     }
+
+    //ButtonSpecial desactia el de special al fer click i activa la resta
     public void SelectSpecial()
     {
+        setIninteractableButtons();
         buttonSpecial.interactable = false;
         SpecialsMenu.SetActive(true);
+        buttonSelecionat = "Special";
     }
+
+    //ButtonRecuperar desactia el de recuperar al fer click i activa la resta
     public void SelectRecuperar()
     {
+        setIninteractableButtons();
         buttonRecuperar.interactable = false;
         SpecialsMenu.SetActive(false);
+        buttonSelecionat = "Recuperar";
     }
+
+    public string getSeleccioButton()
+    {
+        return buttonSelecionat;
+    }
+    
 }

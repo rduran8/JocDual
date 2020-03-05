@@ -26,6 +26,7 @@ public class Player : MovingObject
     public int live; 
     public static Player instance = null;
     private GameObject combat;
+    public int attack = 20;
     
 
 

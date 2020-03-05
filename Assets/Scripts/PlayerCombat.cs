@@ -26,6 +26,7 @@ public class PlayerCombat : MovingObject
     public int live; 
     public static PlayerCombat instance = null;
     private GameObject combat;
+    public int attack = 20;
     // Start is called before the first frame update
     protected override void Start()
     {

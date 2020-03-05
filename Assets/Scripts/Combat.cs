@@ -6,7 +6,6 @@ public class Combat : MonoBehaviour
 {
     public static Combat instance = null;
     private Player player;
-
     private PlayerCombat playerCombat;
     private Enemy enemy;
     private GameObject mapa;
@@ -16,6 +15,8 @@ public class Combat : MonoBehaviour
     public GameObject menuAtac;
     public GameObject menuInfo;
     private BoardManager  BoardScript;
+    private MenuAttack MenuAttackScript;
+    private MenuInfo MenuInfoScript;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +39,8 @@ public class Combat : MonoBehaviour
         this.player = player;
         this.enemy = enemy;
         BoardScript = GameManager.instance.GetComponent<BoardManager>();
+        MenuAttackScript = menuAtac.GetComponent<MenuAttack>();
+        MenuInfoScript = menuInfo.GetComponent<MenuInfo>();
         FadetoCombat();
     }
 
@@ -76,11 +79,36 @@ public class Combat : MonoBehaviour
         
     }
 
-    public void playerAttack()
+    public void playerTurn()
     {
-        playerCombat.Attack();
+        string buttonSeleccionat = null;
+        while(buttonSeleccionat == null)
+        {
+            buttonSeleccionat = MenuAttackScript.getSeleccioButton();
+            if(buttonSeleccionat == "Attack")
+            {
+                Debug.Log("Attack");
+                playerCombat.Attack();
+                MenuInfoScript.changeEnemyLive(enemy.LoseLive(player.attack));
+            }
+            else if(buttonSeleccionat == "Defensa")
+            {
+                Debug.Log("Defensa");
+            }
+            else if(buttonSeleccionat == "Special")
+            {
+                Debug.Log("Special");
+                playerCombat.Attack();
+                MenuInfoScript.changeEnemyLive(enemy.LoseLive(player.attack));
+            }
+            else if(buttonSeleccionat == "Recuperar")
+            {
+                Debug.Log("Recuperar");
+            }
+        }
+        MenuInfoScript.continueCombat();
     }
-    public void enemyAttack()
+    public void enemyTurn()
     {
         enemy.Attack();
     }
