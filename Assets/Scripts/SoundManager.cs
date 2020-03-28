@@ -61,7 +61,10 @@ public class SoundManager : MonoBehaviour
         efxSource.clip = clips[randomIndex];
         efxSource.Play();
     }
-
+    public void stopSound()
+    {
+        efxSource.Stop();
+    }
     void Update () {
         //Setting volume option of Audio Source to be equal to musicVolume
         if(musicVolumeOn){

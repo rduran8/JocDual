@@ -6,7 +6,6 @@ public class Combat : MonoBehaviour
 {
     public static Combat instance = null;
     private Player player;
-    private PlayerCombat playerCombat;
     private Enemy enemy;
     private GameObject mapa;
     public Animator animator;
@@ -15,8 +14,6 @@ public class Combat : MonoBehaviour
     public GameObject menuAtac;
     public GameObject menuInfo;
     private BoardManager  BoardScript;
-    private MenuAttack MenuAttackScript;
-    private MenuInfo MenuInfoScript;
 
     // Start is called before the first frame update
     void Start()
@@ -39,22 +36,20 @@ public class Combat : MonoBehaviour
         this.player = player;
         this.enemy = enemy;
         BoardScript = GameManager.instance.GetComponent<BoardManager>();
-        MenuAttackScript = menuAtac.GetComponent<MenuAttack>();
-        MenuInfoScript = menuInfo.GetComponent<MenuInfo>();
         FadetoCombat();
     }
 
     public void addPlayer()
     {
         //BoardManager  BoardScript = BoardManager.script;
-        playerCombat = BoardScript.addPlayerOnCombat();
+        BoardScript.addPlayerOnCombat();
         //player = GameObject.Find("BoardCombat").GetComponentInChildren<pl;
         //BoardScript.newCombat(this,enemy);
     }
 
     public void addEnemy()
     { 
-        enemy = BoardScript.addEnemyOnCombat();
+        BoardScript.addEnemyOnCombat();
     }
 
     public void FadetoCombat()
@@ -79,36 +74,11 @@ public class Combat : MonoBehaviour
         
     }
 
-    public void playerTurn()
+    public void playerAttack()
     {
-        string buttonSeleccionat = null;
-        while(buttonSeleccionat == null)
-        {
-            buttonSeleccionat = MenuAttackScript.getSeleccioButton();
-            if(buttonSeleccionat == "Attack")
-            {
-                Debug.Log("Attack");
-                playerCombat.Attack();
-                MenuInfoScript.changeEnemyLive(enemy.LoseLive(player.attack));
-            }
-            else if(buttonSeleccionat == "Defensa")
-            {
-                Debug.Log("Defensa");
-            }
-            else if(buttonSeleccionat == "Special")
-            {
-                Debug.Log("Special");
-                playerCombat.Attack();
-                MenuInfoScript.changeEnemyLive(enemy.LoseLive(player.attack));
-            }
-            else if(buttonSeleccionat == "Recuperar")
-            {
-                Debug.Log("Recuperar");
-            }
-        }
-        MenuInfoScript.continueCombat();
+        player.Attack();
     }
-    public void enemyTurn()
+    public void enemyAttack()
     {
         enemy.Attack();
     }

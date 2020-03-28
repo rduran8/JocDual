@@ -15,6 +15,7 @@ public class Player : MovingObject
     public AudioClip moveSound1;
     public AudioClip moveSound2;
     public AudioClip eatSound1;
+    public AudioClip epicSaxGuy;
     public AudioClip eatSound2;
     public AudioClip drinkSound1;
     public AudioClip drinkSound2;
@@ -26,9 +27,9 @@ public class Player : MovingObject
     public int live; 
     public static Player instance = null;
     private GameObject combat;
-    public int attack = 20;
-    
-
+    PopupMessage popupMessage;
+    GameObject gameController;
+    Vector3 originalPos;
 
     protected override void Start()
     {
@@ -55,7 +56,7 @@ public class Player : MovingObject
         SavePlayer();
         Debug.Log(getLife());
         base.Start();
-      
+        originalPos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
     }
 
     private void OnDisable()
@@ -82,6 +83,8 @@ public class Player : MovingObject
         {
             AttemptMove<Wall>(horizontal, vertical);
             AttemptMove<BoneFire>(horizontal, vertical);
+            AttemptMove<Reproductor>(horizontal, vertical);
+            //AttemptMove<Reproductor>(horizontal, vertical);
         }
 
     }
@@ -119,6 +122,19 @@ public class Player : MovingObject
             //SceneManager.LoadScene("Combat",LoadSceneMode.Additive);
             //boneFire.CoockMeat(this);
         }
+        else if (component.tag.Equals("Reproductor"))
+        {
+            Debug.Log(component.tag);
+            Reproductor reproductor = component as Reproductor;
+            animator.SetTrigger("playerChop");
+            //SoundManager.instance.RandomizeSfx(epicSaxGuy);
+            gameController = GameObject.Find("GameController");
+            popupMessage = gameController.GetComponent<PopupMessage>();
+            popupMessage.Open(reproductor);
+          
+         
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -163,6 +179,11 @@ public class Player : MovingObject
         food = data.food;
         live = data.life;
 
+    }
+    public void RestartPlayerPosition()
+    {
+
+        this.transform.position = originalPos;
     }
 
   

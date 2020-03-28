@@ -29,33 +29,22 @@ public class MenuInfo : MonoBehaviour
         if(playerAttackBar.value == 1)
         {
             playerAttackBar.value = 0;
+            CombatScript.playerAttack();
             enabled = false;
-            CombatScript.playerTurn();
-            playerAttackBar.value = 1;
+            
         }
-        //enemyAttackBar.value += Time.deltaTime / 4 - 0.00001f;
-        if (enemyAttackBar.value == 1)
+        playerAttackBar.value += Time.deltaTime/4;
+        if(playerAttackBar.value == 1)
         {
-            enemyAttackBar.value = 0;
+            playerAttackBar.value = 0;
+            CombatScript.enemyAttack();
             enabled = false;
-            CombatScript.enemyTurn();
-            enemyAttackBar.value = 1;
+            
         }
     }
 
     public void iniciCombatInfo()
     {
         
-    }
-
-    //mostrar vida enemic
-    public void changeEnemyLive(int live)
-    {
-        enemyLive.text = live.ToString();
-    }
-
-    public void continueCombat()
-    {
-        enabled = true;
     }
 }

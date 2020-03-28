@@ -25,10 +25,17 @@ public class GameManager : MonoBehaviour
     public bool settings = false;
     private static bool inici = true;
     public int playerLivePoints = 100;
-
+    PopupMessage popupMessage;
+    GameObject gameController;
 
     public void Awake()
     {
+        gameController = GameObject.Find("GameController");
+        popupMessage = gameController.GetComponent<PopupMessage>();
+
+
+        popupMessage.Close();
+
         if (instance == null)
         {
             instance = this;
@@ -39,10 +46,13 @@ public class GameManager : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
         enemies = new List<Enemy>();
+      
+
         boardScript = GetComponent<BoardManager>();
         if (MainMenu.loadBoolea)
         {
             LoadGame();
+            LoadPlayer();
         }
         else
         {
@@ -67,6 +77,13 @@ public class GameManager : MonoBehaviour
     {
         SaveSystem.SaveGame(this);
     }
+    public void LoadPlayer()
+    {
+        PlayerData data = SaveSystem.LoadPlayer();
+        playerFoodPoints = data.food;
+
+
+    }
     public void LoadGame()
     {
         GameData data = SaveSystem.LoadGame();
@@ -74,10 +91,15 @@ public class GameManager : MonoBehaviour
     }
     static private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
         {
-            if(inici){
+      
+       
+        if (inici){
                 inici = false;
             }else{
-                instance.level++;
+            GameObject gameController = GameObject.Find("GameController");
+            PopupMessage popupMessage = gameController.GetComponent<PopupMessage>();
+            popupMessage.Close();
+            instance.level++;
                 instance.InitGame();
             }
             
@@ -153,6 +175,7 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
+        
         //Menu de pausa
         if(Input.GetKeyDown(KeyCode.Escape))
         {
@@ -178,7 +201,7 @@ public class GameManager : MonoBehaviour
     {
         enemies.Add(script);
     }
-
+  
     IEnumerator MoveEnemies()
     {
         enemiesMoving = true;

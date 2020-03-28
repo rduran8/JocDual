@@ -33,6 +33,7 @@ public class BoardManager : MonoBehaviour
     public GameObject[] wallTiles;
     public GameObject[] foodTiles;
     public GameObject[] enemyTiles;
+    public GameObject[] reproductorTiles;
     public GameObject[] outerWallTiles;
     private Transform boardHolder;
     private Transform boardHolderExtra;
@@ -57,6 +58,9 @@ public class BoardManager : MonoBehaviour
 
     void BoardSetup()
     {
+       
+
+
         script = this;
         boardHolder = new GameObject("Board").transform;
         boardHolderExtra = new GameObject("BoardExtra").transform;
@@ -104,11 +108,10 @@ public class BoardManager : MonoBehaviour
         myObject.transform.parent = boardHolderExtra.transform;
     }
 
-    private GameObject instantiateTileCombat(GameObject tileChoice, Vector3 randomPosition)
+    private void instantiateTileCombat(GameObject tileChoice, Vector3 randomPosition)
     {
         GameObject myObject = Instantiate(tileChoice, randomPosition, Quaternion.identity);
         myObject.transform.parent = boardHolderCombat.transform;
-        return myObject;
     }
 
     public void SetupScene(int level)
@@ -122,24 +125,37 @@ public class BoardManager : MonoBehaviour
         {
             Vector3 pbonfire = new Vector3(columns/2, rows/2, 0f);
             instantiateTile(boneFire,pbonfire);
-        }else{
+            var randomNumber = Random.Range(0, 9);
+            var randomRange = Random.Range(0, 100);
+            if (randomRange > 80)
+            {
+                float rowsRandom = Random.Range(1.0f, 8.0f);
+                float columnsRandom = Random.Range(1.05f, 5.0f);
+                Vector3 preproductor = new Vector3((int)(columns / rowsRandom), (int)(rows / columnsRandom), 0f);
+                instantiateTile(reproductorTiles[randomNumber], preproductor);
+            }
+ 
+        
+           
+          
+        }
+        else{
             LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);
             int enemyCount = (int)Mathf.Log(level, 2f);
             LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);
+
         }
         instantiateTile(exit,new Vector3(columns - 1, rows - 1, 0f));
     }
 
-    public PlayerCombat addPlayerOnCombat()
+    public void addPlayerOnCombat()
     {
-        GameObject player = instantiateTileCombat(playerCombat,new Vector3(columns/4, (int)(rows/1.25), 0f));
-        return player.GetComponent<PlayerCombat>();
+        instantiateTileCombat(playerCombat,new Vector3(columns/4, (int)(rows/1.25), 0f));
     }
 
-    public Enemy addEnemyOnCombat()
+    public void addEnemyOnCombat()
     {
-        GameObject enemy = instantiateTileCombat(enemyTiles[0],new Vector3((int)(columns/1.25), (int)(rows/1.25), 0f));
-        return enemy.GetComponent<Enemy>();
+        instantiateTileCombat(enemyTiles[0],new Vector3((int)(columns/1.25), (int)(rows/1.25), 0f));
     }
 
     public void  setSeed(){

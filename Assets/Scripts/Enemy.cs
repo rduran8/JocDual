@@ -12,8 +12,7 @@ public class Enemy : MovingObject
     public AudioClip enemyAttack1;
     public AudioClip enemyAttack2;
     private int wallMove;
-    public int vida = 100;
-    public string element = null;
+    public int vida;
 
     protected override void Start()
     {
@@ -83,10 +82,5 @@ public class Enemy : MovingObject
     public void Attack()
     {
         animator.SetTrigger("enemyAttack");
-    }
-
-    public int LoseLive(int damage)
-    {
-        return vida -= damage;
     }
 }
