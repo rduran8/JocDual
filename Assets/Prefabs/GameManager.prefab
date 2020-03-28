@@ -76,7 +76,7 @@ MonoBehaviour:
   exit: {fileID: 4327309848038117284, guid: bf5fd4268845e1e40bff5b8354518132, type: 3}
   boneFire: {fileID: 8665494492449191832, guid: 67af7150b011367418cf8d02645ac47b,
     type: 3}
-  playerCombat: {fileID: 8654247880566884827, guid: 7609b91830f677742a07ca6032edb08d,
+  playerCombat: {fileID: 7304431087903219482, guid: 0ca7d42df353f604eb055d803784ceb9,
     type: 3}
   floorTiles:
   - {fileID: 7849281429960615672, guid: 75c53e41696545e4baef1c83374591cc, type: 3}
@@ -101,6 +101,17 @@ MonoBehaviour:
   enemyTiles:
   - {fileID: 865600065838869167, guid: 6465e97ede374d34c9ea71b1ce0da4c7, type: 3}
   - {fileID: 5979239448685757761, guid: c1b9e85e1f07b3a40a3d5f52eb60b14d, type: 3}
+  reproductorTiles:
+  - {fileID: 2926357194190065303, guid: 46eb7c60e116ad943864dd299ab2402e, type: 3}
+  - {fileID: 4144717481038260767, guid: a2dfe045c2a70b44da3c3e51e7bd8468, type: 3}
+  - {fileID: 631867202505165585, guid: c72c5c69cffe36f4182db17d79fd4695, type: 3}
+  - {fileID: 2954964071585855008, guid: ee9b0e76e6f057d4db0d70fc2f180ef7, type: 3}
+  - {fileID: 7192472251183988195, guid: c06ec3e775315bb4ba22b16b88ff93de, type: 3}
+  - {fileID: 6837489292036159791, guid: efa08ae3fdf97cf4fbcf86b173268b9a, type: 3}
+  - {fileID: 8304200206359870156, guid: 34e060775214e894f98ec92a1c3ec268, type: 3}
+  - {fileID: 6018207907155502731, guid: c67c6a22ae84d8c4fb9dbd8d8570d0fe, type: 3}
+  - {fileID: 5296365401862662840, guid: c909fd683d4b04146abc3dc3cc62cf22, type: 3}
+  - {fileID: 9088107472383468201, guid: c31876969f8d71844a1e89ca592643f3, type: 3}
   outerWallTiles:
   - {fileID: 209743281912384083, guid: 7d3f2ddc7417dc043b382ba33fe5876e, type: 3}
   - {fileID: 8514527552924960367, guid: cb88fbe6e8457394a8a6988b8f096a28, type: 3}
